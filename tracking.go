@@ -81,16 +81,26 @@ func (a *API) ToggleTracking(activityName string) error {
 	if err != nil {
 		return err
 	}
-	if (tracking.CurrentTracking.Activity != Activity{}) {
-		_, err = a.StopTracking()
+	if (tracking.CurrentTracking.Activity == Activity{}) {
+		_, err = a.StartTracking(activityName)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	stoppedActivityName := tracking.CurrentTracking.Activity.Name
+	_, err = a.StopTracking()
+	if err != nil {
+		return err
+	}
+
+	if stoppedActivityName != activityName {
+		_, err = a.StartTracking(activityName)
 		if err != nil {
 			return err
 		}
 	}
 
-	_, err = a.StartTracking(activityName)
-	if err != nil {
-		return err
-	}
 	return nil
 }
