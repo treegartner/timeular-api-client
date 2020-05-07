@@ -8,7 +8,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 )
+
+// TimeFormat is the format time entries are stored at Timeular
+const TimeFormat = "2006-01-02T15:04:05.000"
 
 // API represents a client to the timeular API.
 type API struct {
@@ -55,8 +59,12 @@ func NewAPI(baseurl, key, secret string) (*API, error) {
 }
 
 // BuildURL builds the fully qualified url to the timeular API.
-func (a *API) BuildURL(relpath string) string {
-	if url, err := a.url.Parse(a.url.String() + relpath); err == nil {
+func BuildURL(baseurl *url.URL, params ...string) string {
+	if baseurl == nil {
+		return ""
+	}
+	urlparams := strings.Join(params, "/")
+	if url, err := baseurl.Parse(baseurl.String() + urlparams); err == nil {
 		return url.String()
 	}
 

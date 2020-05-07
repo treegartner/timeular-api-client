@@ -5,15 +5,6 @@ type Auth struct {
 	Token string `json:"token"`
 }
 
-// Message contains the error message if an error occurred
-type Message struct {
-	Message string `json:"message"`
-}
-
-type Integrations struct {
-	Integrations []string `json:"integrations"`
-}
-
 type Activity struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
@@ -29,27 +20,18 @@ type ArchivedActivities struct {
 	ArchivedActivities []Activity `json:"archivedActivities"`
 }
 
-type Tracking struct {
-	CurrentTracking struct {
-		Activity Activity `json:"activity,omitempty"`
-	} `json:"currentTracking,omitempty"`
+type Duration struct {
 	StartedAt string `json:"startedAt"`
-	Note      Note   `json:"note"`
-	Errors    struct {
-		Errors []string `json:"errors"`
-	} `json:"errors"`
+	StoppedAt string `json:"stoppedAt"`
 }
 
-type CreatedTimeEntry struct {
-	CreatedTimeEntry struct {
-		ID       string   `json:"id"`
-		Activity Activity `json:"activity"`
-		Duration struct {
-			StartedAt string `json:"startedAt"`
-			StoppedAt string `json:"stoppedAt"`
-		} `json:"duration"`
-		Note Note `json:"note"`
-	} `json:"createdTimeEntry"`
+type Errors struct {
+	Errors []string `json:"errors"`
+}
+
+// Message contains the error message if an error occurred
+type Message struct {
+	Message string `json:"message"`
 }
 
 type Note struct {
@@ -62,4 +44,28 @@ type Note struct {
 		Indices []int  `json:"indices"`
 		Key     string `json:"key"`
 	} `json:"mentions"`
+}
+
+type TimeEntry struct {
+	ID       string   `json:"id"`
+	Activity Activity `json:"activity"`
+	Duration Duration `json:"duration"`
+	Note     Note     `json:"note"`
+}
+
+type Tracking struct {
+	CurrentTracking struct {
+		Activity Activity `json:"activity,omitempty"`
+	} `json:"currentTracking,omitempty"`
+	StartedAt string `json:"startedAt"`
+	Note      Note   `json:"note"`
+	Errors    Errors `json:"errors"`
+}
+
+type CreatedTimeEntry struct {
+	CreatedTimeEntry TimeEntry `json:"createdTimeEntry"`
+}
+
+type TimeEntries struct {
+	TimeEntries []TimeEntry `json:"timeEntries"`
 }

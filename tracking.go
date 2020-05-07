@@ -8,7 +8,7 @@ import (
 // CurrentTracking returns the activity by its name or nil
 func (a *API) CurrentTracking() (*Tracking, error) {
 	dst := new(Tracking)
-	url := a.BuildURL("/tracking")
+	url := BuildURL(a.url, "/tracking")
 	err := a.Get(url, dst)
 	return dst, err
 }
@@ -39,9 +39,9 @@ func (a *API) StartTracking(activityName string) (*Tracking, error) {
 	var startTime = struct {
 		StartedAt string `json:"startedAt"`
 	}{}
-	startTime.StartedAt = time.Now().UTC().Format("2006-01-02T15:04:05.000")
+	startTime.StartedAt = time.Now().UTC().Format(TimeFormat)
 	dst := new(CreatedTimeEntry)
-	url := a.BuildURL("/tracking/" + act.ID + "/start")
+	url := BuildURL(a.url, "/tracking/"+act.ID+"/start")
 	err = a.Post(url, startTime, &dst)
 	if err != nil {
 		return nil, err
@@ -64,9 +64,9 @@ func (a *API) StopTracking() (*CreatedTimeEntry, error) {
 	var stopTime = struct {
 		StoppedAt string `json:"stoppedAt"`
 	}{}
-	stopTime.StoppedAt = time.Now().UTC().Format("2006-01-02T15:04:05.000")
+	stopTime.StoppedAt = time.Now().UTC().Format(TimeFormat)
 	dst := new(CreatedTimeEntry)
-	url := a.BuildURL("/tracking/" + tracking.CurrentTracking.Activity.ID + "/stop")
+	url := BuildURL(a.url, "/tracking/"+tracking.CurrentTracking.Activity.ID+"/stop")
 	err = a.Post(url, stopTime, &dst)
 	if err != nil {
 		return nil, err

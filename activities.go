@@ -3,7 +3,7 @@ package timeular
 // ReadActivities returns all Activities in an Activity array
 func (a *API) ReadActivities() (*Activities, error) {
 	dst := new(Activities)
-	url := a.BuildURL("/activities")
+	url := BuildURL(a.url, "/activities")
 	err := a.Get(url, dst)
 	return dst, err
 }
